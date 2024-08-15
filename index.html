@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saath Saath RCCP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            /* Add the background image */
+            background-image: url('https://img.freepik.com/free-vector/red-background-with-polygonal-forms_23-2147635520.jpg?t=st=1723536717~exp=1723540317~hmac=7a2480d2b1bde199fc1c2bf0d68efbcf7d8ae891dda1f52f6f603b147115d3f5&w=2000'); /* Replace with your image path */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* This ensures the background doesn't move */
+        }
+        .title {
+            font-family: 'Pacifico', cursive;
+            font-size: 100px;
+            color: #f39c12;
+            margin-bottom: -15px;
+            margin-top: 30px;
+            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.6);
+        }
+        .game-container {
+            display: grid;
+            grid-template-columns: repeat(13, 60px);
+            grid-gap: 40px;
+            padding: 40px;
+            background-color: #34495e;
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Adding a shadow for a better look */
+        }
+        .card {
+            width: 70px;
+            height: 105px;
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            background-color: #ecf0f1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.5s ease;
+        }
+        .card.revealed {
+            background-color: #ffffff;
+        }
+        .card span {
+            display: none;
+            font-size: 50px;
+            font-weight: bold;
+        }
+        .card.revealed span {
+            display: block;
+        }
+
+        /* Hearts and Diamonds (red) */
+        .hearts.revealed, .diamonds.revealed {
+            color: #e74c3c;
+        }
+
+        /* Spades and Clubs (black) */
+        .spades.revealed, .clubs.revealed {
+            color: #2c3e50;
+        }
+
+        /* Hidden card symbols */
+        .hearts:not(.revealed)::before {
+            content: "♥";
+            color: rgba(231, 76, 60, 0.2);
+        }
+        .diamonds:not(.revealed)::before {
+            content: "♦";
+            color: rgba(231, 76, 60, 0.2);
+        }
+        .spades:not(.revealed)::before {
+            content: "♠";
+            color: rgba(44, 62, 80, 0.2);
+        }
+        .clubs:not(.revealed)::before {
+            content: "♣";
+            color: rgba(44, 62, 80, 0.2);
+        }
+
+        .card::before {
+            font-size: 20px;
+            position: absolute;
+            top: 35%;
+            left: 45%;
+            transform: translate(-50%, -50%);
+        }
+
+        #sevenOfHearts {
+            background-color: #ffffff;
+            color: #e74c3c;
+        }
+        #sevenOfHearts::before {
+            display: none;
+        }
+
+      
+        /* Animation styles */
+        .animate {
+            animation: enlargeAndRotate 4s forwards;
+        }
+
+        @keyframes enlargeAndRotate {
+            0% {
+                transform: scale(1) rotate(0deg);
+                z-index: 1;
+            }
+            25% {
+                transform: scale(2) rotate(1440deg); /* Spin while enlarging */
+                z-index: 1;
+            }
+            50% {
+                transform: scale(2) rotate(1440deg); /* Stay enlarged and spun */
+                z-index: 1;
+            }
+            75% {
+                transform: scale(1) rotate(2880deg); /* Start scaling down while continuing to spin */
+                z-index: 1;
+            }
+            100% {
+                transform: scale(1) rotate(2880deg); /* Final state */
+                z-index: 1;
+            }
+        }
+
+
+        /* Undo button styles */
+        .undo-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            color: #ffffff;
+            background-color: #e74c3c;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .undo-button:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <div class="title">Saath Saath</div>
+    <div class="game-container">
+        <!-- Hearts Row -->
+        <div id="aceHearts" class="card hearts"><span><b>A♥</b></span></div>
+        <div id="twoHearts" class="card hearts"><span>2♥</span></div>
+        <div id="threeHearts" class="card hearts"><span>3♥</span></div>
+        <div id="fourHearts" class="card hearts"><span>4♥</span></div>
+        <div id="fiveHearts" class="card hearts"><span>5♥</span></div>
+        <div id="sixHearts" class="card hearts"><span>6♥</span></div>
+        <div id="sevenOfHearts" class="card hearts revealed"><span>7♥</span></div>
+        <div id="eightHearts" class="card hearts"><span>8♥</span></div>
+        <div id="nineHearts" class="card hearts"><span>9♥</span></div>
+        <div id="tenHearts" class="card hearts"><span>10♥</span></div>
+        <div id="jackHearts" class="card hearts"><span>J♥</span></div>
+        <div id="queenHearts" class="card hearts"><span>Q♥</span></div>
+        <div id="kingHearts" class="card hearts"><span>K♥</span></div>
+
+        <!-- Diamonds Row -->
+        <div id="aceDiamonds" class="card diamonds"><span>A♦</span></div>
+        <div id="twoDiamonds" class="card diamonds"><span>2♦</span></div>
+        <div id="threeDiamonds" class="card diamonds"><span>3♦</span></div>
+        <div id="fourDiamonds" class="card diamonds"><span>4♦</span></div>
+        <div id="fiveDiamonds" class="card diamonds"><span>5♦</span></div>
+        <div id="sixDiamonds" class="card diamonds"><span>6♦</span></div>
+        <div id="sevenDiamonds" class="card diamonds"><span>7♦</span></div>
+        <div id="eightDiamonds" class="card diamonds"><span>8♦</span></div>
+        <div id="nineDiamonds" class="card diamonds"><span>9♦</span></div>
+        <div id="tenDiamonds" class="card diamonds"><span>10♦</span></div>
+        <div id="jackDiamonds" class="card diamonds"><span>J♦</span></div>
+        <div id="queenDiamonds" class="card diamonds"><span>Q♦</span></div>
+        <div id="kingDiamonds" class="card diamonds"><span>K♦</span></div>
+
+        <!-- Spades Row -->
+        <div id="aceSpades" class="card spades"><span>A♠</span></div>
+        <div id="twoSpades" class="card spades"><span>2♠</span></div>
+        <div id="threeSpades" class="card spades"><span>3♠</span></div>
+        <div id="fourSpades" class="card spades"><span>4♠</span></div>
+        <div id="fiveSpades" class="card spades"><span>5♠</span></div>
+        <div id="sixSpades" class="card spades"><span>6♠</span></div>
+        <div id="sevenSpades" class="card spades"><span>7♠</span></div>
+        <div id="eightSpades" class="card spades"><span>8♠</span></div>
+        <div id="nineSpades" class="card spades"><span>9♠</span></div>
+        <div id="tenSpades" class="card spades"><span>10♠</span></div>
+        <div id="jackSpades" class="card spades"><span>J♠</span></div>
+        <div id="queenSpades" class="card spades"><span>Q♠</span></div>
+        <div id="kingSpades" class="card spades"><span>K♠</span></div>
+
+        <!-- Clubs Row -->
+        <div id="aceClubs" class="card clubs"><span>A♣</span></div>
+        <div id="twoClubs" class="card clubs"><span>2♣</span></div>
+        <div id="threeClubs" class="card clubs"><span>3♣</span></div>
+        <div id="fourClubs" class="card clubs"><span>4♣</span></div>
+        <div id="fiveClubs" class="card clubs"><span>5♣</span></div>
+        <div id="sixClubs" class="card clubs"><span>6♣</span></div>
+        <div id="sevenClubs" class="card clubs"><span>7♣</span></div>
+        <div id="eightClubs" class="card clubs"><span>8♣</span></div>
+        <div id="nineClubs" class="card clubs"><span>9♣</span></div>
+        <div id="tenClubs" class="card clubs"><span>10♣</span></div>
+        <div id="jackClubs" class="card clubs"><span>J♣</span></div>
+        <div id="queenClubs" class="card clubs"><span>Q♣</span></div>
+        <div id="kingClubs" class="card clubs"><span>K♣</span></div>
+    </div>
+    <button class="undo-button" onclick="undoLastMove()">Undo Last Move</button>
+
+    <script>
+   // Reveal cards on click
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            card.addEventListener('click', function() {
+                if (this.classList.contains('animate')) return; // Prevent re-triggering animation
+
+                this.classList.add('revealed');
+                this.classList.add('animate');
+
+                // Remove the animation class after the animation duration to allow the card to return to its original state
+                setTimeout(() => {
+                    this.classList.remove('animate');
+                }, 5000); // Match the full duration of the animation
+            });
+        });
+
+        // Undo the last move function
+        function undoLastMove() {
+            const lastRevealed = document.querySelectorAll('.card.revealed');
+            if (lastRevealed.length > 0) {
+                const lastCard = lastRevealed[lastRevealed.length - 1];
+                lastCard.classList.remove('revealed', 'animate');
+            }
+        }
+
+
+    </script>
+</body>
+</html>
