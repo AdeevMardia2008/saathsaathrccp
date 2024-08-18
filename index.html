@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Saath Saath RCCP</title>
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Raleway:wght@300&family=Permanent+Marker&display=swap" rel="stylesheet">
     <style>
         body {
             display: flex;
@@ -14,19 +14,26 @@
             height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
-            /* Add the background image */
             background-image: url('https://img.freepik.com/free-vector/red-background-with-polygonal-forms_23-2147635520.jpg?t=st=1723536717~exp=1723540317~hmac=7a2480d2b1bde199fc1c2bf0d68efbcf7d8ae891dda1f52f6f603b147115d3f5&w=2000'); /* Replace with your image path */
             background-size: cover;
             background-position: center;
-            background-attachment: fixed; /* This ensures the background doesn't move */
+            background-attachment: fixed;
         }
         .title {
             font-family: 'Pacifico', cursive;
             font-size: 100px;
             color: #f39c12;
-            margin-bottom: -15px;
+            margin-bottom: -20px;
             margin-top: 50px;
             text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.6);
+        }
+        .tagline {
+            font-family: 'Permanent Marker', cursive;
+            font-size: 40px;
+            color: #BF6900; /* Solid color for the tagline */
+            margin-top: -35 px;
+            margin-bottom: 10 px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.6);
         }
         .game-container {
             display: grid;
@@ -36,7 +43,7 @@
             background-color: #34495e;
             border-radius: 10px;
             position: relative;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Adding a shadow for a better look */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
         }
         .card {
             width: 70px;
@@ -107,7 +114,6 @@
             display: none;
         }
 
-      
         /* Animation styles */
         .animate {
             animation: enlargeAndRotate 4s forwards;
@@ -119,23 +125,22 @@
                 z-index: 1;
             }
             25% {
-                transform: scale(2) rotate(1440deg); /* Spin while enlarging */
+                transform: scale(2) rotate(1440deg);
                 z-index: 1;
             }
             50% {
-                transform: scale(2) rotate(1440deg); /* Stay enlarged and spun */
+                transform: scale(2) rotate(1440deg);
                 z-index: 1;
             }
             75% {
-                transform: scale(1) rotate(2880deg); /* Start scaling down while continuing to spin */
+                transform: scale(1) rotate(2880deg);
                 z-index: 1;
             }
             100% {
-                transform: scale(1) rotate(2880deg); /* Final state */
+                transform: scale(1) rotate(2880deg);
                 z-index: 1;
             }
         }
-
 
         /* Undo button styles */
         .undo-button {
@@ -151,10 +156,30 @@
         .undo-button:hover {
             background-color: #c0392b;
         }
+        /* Add this CSS to style the logo container and images */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            position: absolute;
+            top: 10px; /* Adjust based on your needs */
+            left: 10px; /* Adjust based on your needs */
+        }
+
+        .logo {
+            width: 110px; /* Adjust width as needed */
+            height: auto;
+            margin-right: 10px; /* Space between images */
+        }
+
     </style>
 </head>
 <body>
+    <div class="logo-container">
+        <img src="/rccp.png" alt="First Image" class="logo">
+        <img src="/risingstarz.png" alt="Second Image" class="logo">
+    </div>    
     <div class="title">Saath Saath</div>
+    <div class="tagline"><b>THALA FOR A REASON</b></div>
     <div class="game-container">
         <!-- Hearts Row -->
         <div id="aceHearts" class="card hearts"><span><b>A♥</b></span></div>
@@ -216,35 +241,32 @@
         <div id="queenClubs" class="card clubs"><span>Q♣</span></div>
         <div id="kingClubs" class="card clubs"><span>K♣</span></div>
     </div>
-    <button class="undo-button" onclick="undoLastMove()">Undo</button>
-
+    <button class="undo-button" onclick="undo()">Undo</button>
     <script>
-   // Reveal cards on click
         const cards = document.querySelectorAll('.card');
-        cards.forEach(card => {
-            card.addEventListener('click', function() {
-                if (this.classList.contains('animate')) return; // Prevent re-triggering animation
+        let revealedCards = [];
 
-                this.classList.add('revealed');
-                this.classList.add('animate');
+        function revealCard(card) {
+            card.classList.add('revealed');
+            revealedCards.push(card);
+            card.classList.add('animate');
+            setTimeout(() => card.classList.remove('animate'), 4000);
+        }
 
-                // Remove the animation class after the animation duration to allow the card to return to its original state
-                setTimeout(() => {
-                    this.classList.remove('animate');
-                }, 5000); // Match the full duration of the animation
-            });
-        });
-
-        // Undo the last move function
-        function undoLastMove() {
-            const lastRevealed = document.querySelectorAll('.card.revealed');
-            if (lastRevealed.length > 0) {
-                const lastCard = lastRevealed[lastRevealed.length - 1];
-                lastCard.classList.remove('revealed', 'animate');
+        function undo() {
+            if (revealedCards.length > 0) {
+                const lastRevealed = revealedCards.pop();
+                lastRevealed.classList.remove('revealed');
             }
         }
 
-
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                if (!card.classList.contains('revealed')) {
+                    revealCard(card);
+                }
+            });
+        });
     </script>
 </body>
 </html>
